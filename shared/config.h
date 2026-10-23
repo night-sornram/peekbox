@@ -11,10 +11,17 @@
 // Either reserve this IP for the cam in your router (DHCP reservation), or set
 // PEEKBOX_CAM_STATIC_IP to 1 so the cam configures it itself.
 #define PEEKBOX_CAM_STATIC_IP  0
-#define PEEKBOX_CAM_IP         192, 168, 1, 50
+#define PEEKBOX_CAM_IP         192, 168, 0, 197
 #define PEEKBOX_CAM_GATEWAY    192, 168, 1, 1
 #define PEEKBOX_CAM_SUBNET     255, 255, 255, 0
 #define PEEKBOX_CAM_DNS        192, 168, 1, 1
+
+// Camera WiFi transmit power (an Arduino-ESP32 wifi_power_t value). The default
+// WIFI_POWER_19_5dBm draws the largest current spikes; lowering it eases brownouts
+// on a weak 5 V supply at the cost of range. It is a fallback, not a replacement
+// for a proper >=1 A supply. Options: WIFI_POWER_19_5dBm, 17dBm, 15dBm, 13dBm,
+// 11dBm, 8_5dBm, 7dBm, 5dBm, 2dBm (written e.g. WIFI_POWER_8_5dBm).
+#define PEEKBOX_CAM_WIFI_TX_POWER  WIFI_POWER_11dBm
 
 // ---- Frames ------------------------------------------------------------------
 #define PEEKBOX_FRAME_W        240

@@ -96,6 +96,10 @@ static void connectWifi() {
   }
 #endif
   WiFi.begin(PEEKBOX_WIFI_SSID, PEEKBOX_WIFI_PASS);
+  // Must follow begin(): the 19.5 dBm default overwrote it when set earlier (seen on core 3.3.12).
+  if (!WiFi.setTxPower(PEEKBOX_CAM_WIFI_TX_POWER)) {
+    Serial.println("[wifi] setTxPower failed, using default power");
+  }
   Serial.printf("[wifi] connecting to %s", PEEKBOX_WIFI_SSID);
   uint32_t start = millis();
   while (WiFi.status() != WL_CONNECTED) {
@@ -106,8 +110,8 @@ static void connectWifi() {
     delay(250);
     Serial.print('.');
   }
-  Serial.printf("\n[wifi] connected, IP %s, RSSI %d dBm\n",
-                WiFi.localIP().toString().c_str(), WiFi.RSSI());
+  Serial.printf("\n[wifi] connected, IP %s, RSSI %d dBm, TX power %.1f dBm\n",
+                WiFi.localIP().toString().c_str(), WiFi.RSSI(), (int)WiFi.getTxPower() / 4.0f);  // wifi_power_t is in 0.25 dBm units
 }
 
 // ---- Motion state (PIR); filled in by motion.cpp ------------------------------
